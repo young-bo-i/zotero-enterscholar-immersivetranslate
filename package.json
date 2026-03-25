@@ -1,7 +1,7 @@
 {
   "name": "zotero-ente-translate",
   "type": "module",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "恩特对照翻译 — Zotero PDF 对照翻译插件",
   "keywords": [
     "zotero",
