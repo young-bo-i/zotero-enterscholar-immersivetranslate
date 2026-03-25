@@ -21,32 +21,26 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v4
-        with:
-          version: ^9.0
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: "pnpm"
 
       - name: Install deps
-        run: pnpm install --no-frozen-lockfile
+        run: npm install -f
 
       - name: Build
-        run: pnpm build
+        run: npm run build
 
       - name: Release to GitHub
         run: |
-          pnpm release
+          npm run release
           sleep 1s
 
       - name: Notify release
         uses: apexskier/github-release-commenter@v1
         continue-on-error: true
         with:
-          GITHUB_TOKEN: ${{ secrets.GitHub_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           comment-template: |
             :rocket: _This ticket has been resolved in {release_tag}. See {release_link} for release notes._

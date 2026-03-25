@@ -3,14 +3,14 @@ import pkg from "./package.json";
 
 export default defineConfig({
   source: ["src", "addon"],
-  dist: "dist",
+  dist: "build",
   name: pkg.config.addonName,
   id: pkg.config.addonID,
   namespace: pkg.config.addonRef,
+  xpiName: pkg.config.xpiName,
   updateURL: `https://github.com/{{owner}}/{{repo}}/releases/download/release/${
     pkg.version.includes("-") ? "update-beta.json" : "update.json"
   }`,
-  xpiName: pkg.config.xpiName,
   xpiDownloadLink:
     "https://github.com/{{owner}}/{{repo}}/releases/download/v{{version}}/{{xpiName}}.xpi",
 
@@ -32,18 +32,15 @@ export default defineConfig({
         entryPoints: ["src/index.ts"],
         define: {
           __env__: `"${process.env.NODE_ENV}"`,
-          __NEW_GA_MEASUREMENT_ID__: `"${process.env.NEW_GA_MEASUREMENT_ID}"`,
-          __NEW_GA_API_SECRET__: `"${process.env.NEW_GA_API_SECRET}"`,
-          __OLD_GA_MEASUREMENT_ID__: `"${process.env.OLD_GA_MEASUREMENT_ID}"`,
-          __OLD_GA_API_SECRET__: `"${process.env.OLD_GA_API_SECRET}"`,
+          __NEW_GA_MEASUREMENT_ID__: `""`,
+          __NEW_GA_API_SECRET__: `""`,
+          __OLD_GA_MEASUREMENT_ID__: `""`,
+          __OLD_GA_API_SECRET__: `""`,
         },
         bundle: true,
         target: "firefox115",
-        outfile: `dist/addon/content/scripts/${pkg.config.addonRef}.js`,
+        outdir: `build/addon/content/scripts`,
       },
     ],
   },
-
-  // If you need to see a more detailed log, uncomment the following line:
-  // logLevel: "trace",
 });

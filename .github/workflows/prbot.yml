@@ -18,22 +18,16 @@ jobs:
           fetch-depth: 0
           persist-credentials: true
 
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v4
-        with:
-          version: ^9.0
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: "pnpm"
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: npm install -f
 
       - name: Run lint
-        run: pnpm lint:check
+        run: npm run lint:fix
 
       - name: Commit & push fixes
         id: git_push
@@ -64,7 +58,7 @@ jobs:
             I automatically applied lint fixes but couldn't push to your branch—could you please run:
 
             ```bash
-            pnpm lint:fix
+            npm run lint:fix
             ```
 
             and push the results? Thanks!

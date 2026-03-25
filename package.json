@@ -31,8 +31,8 @@
   "license": "AGPL-3.0-or-later",
   "scripts": {
     "start": "zotero-plugin serve",
-    "build": "zotero-plugin build && tsc --noEmit",
-    "build:dev": "zotero-plugin build --dev && tsc --noEmit",
+    "build": "tsc --noEmit && zotero-plugin build",
+    "build:dev": "tsc --noEmit && zotero-plugin build --dev",
     "lint:check": "prettier --check . && eslint .",
     "lint:fix": "prettier --write . && eslint . --fix",
     "release": "zotero-plugin release",
@@ -53,7 +53,7 @@
     "prettier": "^3.5.3",
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.28.0",
-    "zotero-plugin-scaffold": "^0.4.1",
+    "zotero-plugin-scaffold": "^0.8.5",
     "zotero-types": "^4.1.0-beta.1"
   },
   "prettier": {
