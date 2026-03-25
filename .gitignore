@@ -12,8 +12,5 @@ tsconfig.tsbuildinfo
 .env
 .scaffold
 build
-dist
 logs
-
-# Zotero
-zotero-cmd.json
+dist

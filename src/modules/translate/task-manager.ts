@@ -229,7 +229,9 @@ export async function showTaskManager() {
             addon.data.env === "development" ? TEST_APP_SITE_URL : APP_SITE_URL;
           Zotero.launchURL(`${APP_URL}/babel-doc/${task.pdfId}?from=zotero`);
         } else {
-          Zotero.launchURL(`https://entscholar.com`);
+          Zotero.launchURL(
+            `https://github.com/young-bo-i/zotero-enterscholar-immersivetranslate/issues`,
+          );
         }
       } else {
         showDialog({

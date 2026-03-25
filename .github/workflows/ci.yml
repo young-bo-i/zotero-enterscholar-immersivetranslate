@@ -11,44 +11,63 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GitHub_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          version: ^7.0
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: "pnpm"
 
       - name: Install deps
-        run: npm install -f
+        run: pnpm install --no-frozen-lockfile
 
       - name: Run Lint
-        run: npm run lint:check
+        run: |
+          pnpm lint:check
 
   build:
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GitHub_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          version: ^7.0
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: "pnpm"
 
       - name: Install deps
-        run: npm install -f
+        run: pnpm install --no-frozen-lockfile
 
       - name: Build
-        run: npm run build
+        run: |
+          pnpm build
 
       - name: Upload build result
         uses: actions/upload-artifact@v4
         with:
           name: build-result
-          path: build
+          path: |
+            dist

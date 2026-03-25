@@ -1,21 +1,9 @@
 import { getPref } from "../utils/prefs";
-import {
-  BASE_URL_TEST,
-  BASE_URL,
-  BASE_URL_TEST_CN,
-  BASE_URL_CN,
-} from "../utils/const";
-import { checkIsCN } from "../utils/cn";
+import { BASE_URL } from "../utils/const";
 import { logout } from "./auth";
 
 function getBaseUrl() {
-  const isCN = checkIsCN();
-  const isDev = addon.data.env === "development";
-  if (isDev) {
-    return isCN ? BASE_URL_TEST_CN : BASE_URL_TEST;
-  } else {
-    return isCN ? BASE_URL_CN : BASE_URL;
-  }
+  return BASE_URL;
 }
 
 export async function request({
@@ -136,11 +124,11 @@ export async function request({
           }
         }
 
-        if (response.status === 401) {
-          logout();
-        }
-
+        // Don't retry for client-side errors (4xx)
         if (response.status >= 400 && response.status < 500) {
+          if (response.status === 401) {
+            logout();
+          }
           if (fullFillOnError) {
             return {
               error: lastError,

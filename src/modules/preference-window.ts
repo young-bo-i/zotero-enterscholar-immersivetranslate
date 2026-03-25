@@ -9,9 +9,11 @@ import {
   dualModeOptions,
   fontFamilyOptions,
   ocrWorkaroundOptions,
+  translateModels_CN,
   layoutModelOptions,
 } from "../config";
 import type { Language } from "./language/types";
+import { checkIsCN } from "../utils/cn";
 import { login, logout, isLoggedIn, getLoggedInEmail } from "../api/auth";
 
 export function registerPrefs() {
@@ -119,6 +121,9 @@ function buildPrefsPane() {
     doc.querySelector(`#${config.addonRef}-translate-mode-placeholder`)!,
   );
 
+  const isCN = checkIsCN();
+  const real_translateModels = isCN ? translateModels_CN : translateModels;
+
   ztoolkit.UI.replaceElement(
     {
       tag: "menulist",
@@ -133,7 +138,7 @@ function buildPrefsPane() {
       children: [
         {
           tag: "menupopup",
-          children: translateModels.map((item) => {
+          children: real_translateModels.map((item) => {
             return {
               tag: "menuitem",
               attributes: {
@@ -310,24 +315,53 @@ function buildPrefsPane() {
   );
 }
 
-function bindPrefEvents() {
-  const doc = addon.data.prefs!.window.document;
+function updateLoginUI() {
+  const doc = addon.data.prefs?.window?.document;
   if (!doc) return;
 
-  updateLoginUI(doc);
+  const loginSection = doc.getElementById(
+    `zotero-prefpane-${config.addonRef}-login-section`,
+  );
+  const loggedInSection = doc.getElementById(
+    `zotero-prefpane-${config.addonRef}-loggedin-section`,
+  );
+  const statusLabel = doc.getElementById(
+    `zotero-prefpane-${config.addonRef}-login-status`,
+  );
+
+  if (isLoggedIn()) {
+    loginSection?.setAttribute("hidden", "true");
+    loggedInSection?.removeAttribute("hidden");
+    if (statusLabel) {
+      statusLabel.setAttribute(
+        "value",
+        `${getString("pref-login-status")}: ${getLoggedInEmail()}`,
+      );
+    }
+  } else {
+    loginSection?.removeAttribute("hidden");
+    loggedInSection?.setAttribute("hidden", "true");
+  }
+}
+
+function bindPrefEvents() {
+  const doc = addon.data.prefs?.window?.document;
+  if (!doc) return;
+
+  updateLoginUI();
 
   doc
-    .querySelector(`#zotero-prefpane-${config.addonRef}-login-button`)
+    .getElementById(`zotero-prefpane-${config.addonRef}-login-button`)
     ?.addEventListener("command", async () => {
-      const emailInput = doc.querySelector(
-        `#zotero-prefpane-${config.addonRef}-login-email`,
+      const emailInput = doc.getElementById(
+        `zotero-prefpane-${config.addonRef}-login-email`,
       ) as HTMLInputElement | null;
-      const passwordInput = doc.querySelector(
-        `#zotero-prefpane-${config.addonRef}-login-password`,
+      const passwordInput = doc.getElementById(
+        `zotero-prefpane-${config.addonRef}-login-password`,
       ) as HTMLInputElement | null;
 
-      const email = emailInput?.value?.trim() || "";
-      const password = passwordInput?.value || "";
+      const email = emailInput?.value?.trim();
+      const password = passwordInput?.value;
 
       if (!email || !password) {
         showDialog({ title: getString("pref-login-failed") });
@@ -336,48 +370,22 @@ function bindPrefEvents() {
 
       try {
         await login(email, password);
-        if (passwordInput) passwordInput.value = "";
-        updateLoginUI(doc);
         showDialog({ title: getString("pref-login-success") });
+        if (passwordInput) passwordInput.value = "";
+        updateLoginUI();
       } catch (error: any) {
         ztoolkit.log("Login failed:", error);
         showDialog({
           title: getString("pref-login-failed"),
-          message: error.message || "",
+          message: error.message,
         });
       }
     });
 
   doc
-    .querySelector(`#zotero-prefpane-${config.addonRef}-logout-button`)
+    .getElementById(`zotero-prefpane-${config.addonRef}-logout-button`)
     ?.addEventListener("command", () => {
       logout();
-      updateLoginUI(doc);
+      updateLoginUI();
     });
-}
-
-function updateLoginUI(doc: Document) {
-  const loginSection = doc.querySelector(
-    `#zotero-prefpane-${config.addonRef}-login-section`,
-  ) as HTMLElement | null;
-  const loggedSection = doc.querySelector(
-    `#zotero-prefpane-${config.addonRef}-logged-section`,
-  ) as HTMLElement | null;
-  const statusLabel = doc.querySelector(
-    `#zotero-prefpane-${config.addonRef}-login-status`,
-  ) as HTMLElement | null;
-
-  if (!loginSection || !loggedSection) return;
-
-  if (isLoggedIn()) {
-    loginSection.setAttribute("hidden", "true");
-    loggedSection.removeAttribute("hidden");
-    const email = getLoggedInEmail();
-    if (statusLabel) {
-      statusLabel.setAttribute("data-l10n-args", JSON.stringify({ email }));
-    }
-  } else {
-    loginSection.removeAttribute("hidden");
-    loggedSection.setAttribute("hidden", "true");
-  }
 }

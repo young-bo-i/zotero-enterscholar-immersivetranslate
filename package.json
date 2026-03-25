@@ -1,29 +1,29 @@
 {
-  "name": "zotero-ente-translate",
+  "name": "zotero-enterscholar-immersivetranslate",
   "type": "module",
-  "version": "0.1.2",
-  "description": "恩特对照翻译 — Zotero PDF 对照翻译插件",
+  "version": "0.1.0",
+  "description": "Zotero BabelDOC plugin for Ente Scholar users.",
   "keywords": [
     "zotero",
     "babeldoc",
     "plugin",
     "pdf-translation",
     "translation",
-    "ente-scholar"
+    "enterscholar"
   ],
   "config": {
     "addonName": "恩特对照翻译",
-    "addonID": "zotero@entscholar.com",
-    "addonRef": "entetranslate",
-    "addonInstance": "EnteTranslate",
-    "prefsPrefix": "extensions.zotero.entetranslate",
+    "addonID": "zotero@enterscholar.com",
+    "addonRef": "enterscholar",
+    "addonInstance": "EnteScholar",
+    "prefsPrefix": "extensions.zotero.enterscholar",
     "xpiName": "ente-translate"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/young-bo-i/zotero-enterscholar-immersivetranslate.git"
   },
-  "author": "entscholar",
+  "author": "young-bo-i",
   "bugs": {
     "url": "https://github.com/young-bo-i/zotero-enterscholar-immersivetranslate/issues"
   },
@@ -31,8 +31,8 @@
   "license": "AGPL-3.0-or-later",
   "scripts": {
     "start": "zotero-plugin serve",
-    "build": "tsc --noEmit && zotero-plugin build",
-    "build:dev": "tsc --noEmit && zotero-plugin build --dev",
+    "build": "zotero-plugin build && tsc --noEmit",
+    "build:dev": "zotero-plugin build --dev && tsc --noEmit",
     "lint:check": "prettier --check . && eslint .",
     "lint:fix": "prettier --write . && eslint . --fix",
     "release": "zotero-plugin release",
@@ -40,7 +40,7 @@
     "update-deps": "npm update --save"
   },
   "dependencies": {
-    "zotero-plugin-toolkit": "^5.1.2"
+    "zotero-plugin-toolkit": "^5.1.0-beta.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.23.0",
@@ -53,8 +53,8 @@
     "prettier": "^3.5.3",
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.28.0",
-    "zotero-plugin-scaffold": "^0.8.5",
-    "zotero-types": "^4.1.2"
+    "zotero-plugin-scaffold": "^0.4.1",
+    "zotero-types": "^4.1.0-beta.1"
   },
   "prettier": {
     "printWidth": 80,

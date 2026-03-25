@@ -1,10 +1,10 @@
 startup-begin = 插件加载中
 startup-finish = 插件已就绪
 menuitem-translate = 恩特对照翻译(Shift+A)
-menuView-tasks = 查看翻译任务(Shift+T)
+menuView-tasks = 查看恩特翻译任务(Shift+T)
 pref-test-success = 测试成功
 pref-test-failed = 测试失败
-pref-test-failed-description = 请检查授权码是否正确
+pref-test-failed-description = 请检查账号是否正确
 
 prefs-title = 恩特对照翻译
 item-filed-status = 翻译状态
@@ -104,6 +104,6 @@ task-retry-tip = 只能重试失败的任务
 
 # Network and download related strings
 network-slow-title = 当前网络访问较慢
-network-slow-message = 当前网络访问较慢，请检查网络连接或稍后重试。
+network-slow-message = 网络访问较慢，请稍后重试。
 network-slow-dont-remind = 不再提醒
 download-failed = 下载失败

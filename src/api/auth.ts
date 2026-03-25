@@ -9,11 +9,6 @@ export interface LoginResponse {
   };
 }
 
-export interface UserInfo {
-  name: string;
-  email: string;
-}
-
 export async function login(
   email: string,
   password: string,
@@ -44,28 +39,6 @@ export async function login(
   setPref("userName", data.user.name);
 
   return data;
-}
-
-export async function getUserInfo(token: string): Promise<UserInfo> {
-  const url = `${AUTH_BASE_URL}/auth/user-info`;
-  const xhr = await Zotero.HTTP.request("GET", url, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: "application/json",
-    },
-    responseType: "json",
-  });
-
-  if (xhr?.status !== 200) {
-    throw new Error(`HTTP ${xhr?.status}`);
-  }
-
-  const resp = xhr.response;
-  if (resp.code !== 0) {
-    throw new Error(resp.message || "获取用户信息失败");
-  }
-
-  return resp.data as UserInfo;
 }
 
 export function logout(): void {

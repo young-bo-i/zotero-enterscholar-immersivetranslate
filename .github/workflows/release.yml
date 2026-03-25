@@ -14,27 +14,34 @@ jobs:
   release:
     runs-on: ubuntu-latest
     env:
-      GITHUB_TOKEN: ${{ secrets.GitHub_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          version: ^7.0
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: "pnpm"
 
       - name: Install deps
-        run: npm install -f
+        run: pnpm install --no-frozen-lockfile
 
       - name: Build
-        run: npm run build
+        run: |
+          pnpm build
 
       - name: Release to GitHub
         run: |
-          npm run release
+          pnpm release
           sleep 1s
 
       - name: Notify release

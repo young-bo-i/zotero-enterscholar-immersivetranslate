@@ -4,9 +4,8 @@
 <vbox onload="Zotero.__addonInstance__.hooks.onPrefsEvent('load', { window })">
   <groupbox>
     <label><html:h2 data-l10n-id="pref-title"></html:h2></label>
-    <!-- 未登录区域 -->
     <vbox id="zotero-prefpane-__addonRef__-login-section">
-      <hbox align="center" style="margin-bottom: 6px">
+      <hbox align="center">
         <html:label
           for="zotero-prefpane-__addonRef__-login-email"
           data-l10n-id="pref-login-email"
@@ -18,7 +17,7 @@
           style="flex: 1"
         ></html:input>
       </hbox>
-      <hbox align="center" style="margin-bottom: 6px">
+      <hbox align="center" style="margin-top: 6px">
         <html:label
           for="zotero-prefpane-__addonRef__-login-password"
           data-l10n-id="pref-login-password"
@@ -30,7 +29,7 @@
           style="flex: 1"
         ></html:input>
       </hbox>
-      <hbox align="center">
+      <hbox align="center" style="margin-top: 8px">
         <button
           id="zotero-prefpane-__addonRef__-login-button"
           data-l10n-id="pref-login-button"
@@ -44,17 +43,17 @@
         ></label>
       </hbox>
     </vbox>
-    <!-- 已登录区域 -->
-    <vbox id="zotero-prefpane-__addonRef__-logged-section" hidden="true">
+    <vbox id="zotero-prefpane-__addonRef__-loggedin-section" hidden="true">
       <hbox align="center">
         <label
           id="zotero-prefpane-__addonRef__-login-status"
           data-l10n-id="pref-login-status"
         ></label>
+      </hbox>
+      <hbox align="center" style="margin-top: 8px">
         <button
           id="zotero-prefpane-__addonRef__-logout-button"
           data-l10n-id="pref-logout-button"
-          style="margin-left: 12px"
         ></button>
       </hbox>
     </vbox>
@@ -204,7 +203,7 @@
         data-l10n-id="pref-about-feedback"
         is="zotero-text-link"
         class="zotero-text-link"
-        href="https://enterscholar.com"
+        href="https://github.com/young-bo-i/zotero-enterscholar-immersivetranslate"
         style="margin-right: 4px"
       ></label>
       <label

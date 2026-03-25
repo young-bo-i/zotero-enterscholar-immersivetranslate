@@ -1,10 +1,10 @@
 startup-begin = Addon is loading
 startup-finish = Addon is ready
 menuitem-translate = Ente Translate(Shift+A)
-menuView-tasks = View Translation Tasks(Shift+T)
+menuView-tasks = View Ente Translation Tasks(Shift+T)
 pref-test-success = Test successfully
 pref-test-failed = Test failed
-pref-test-failed-description = Please check your authkey
+pref-test-failed-description = Please check your account credentials
 
 prefs-title = Ente Translate
 item-filed-status = Translation Status
@@ -103,6 +103,6 @@ task-retry-tip = Only failed tasks can be retried
 
 # Network and download related strings
 network-slow-title = Slow Network Access
-network-slow-message = The current network access is slow. Please check your connection or try again later.
+network-slow-message = Network access is slow, please try again later.
 network-slow-dont-remind = Don't remind again
 download-failed = Download failed

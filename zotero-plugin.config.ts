@@ -3,14 +3,14 @@ import pkg from "./package.json";
 
 export default defineConfig({
   source: ["src", "addon"],
-  dist: "build",
+  dist: "dist",
   name: pkg.config.addonName,
   id: pkg.config.addonID,
   namespace: pkg.config.addonRef,
-  xpiName: pkg.config.xpiName,
   updateURL: `https://github.com/{{owner}}/{{repo}}/releases/download/release/${
     pkg.version.includes("-") ? "update-beta.json" : "update.json"
   }`,
+  xpiName: pkg.config.xpiName,
   xpiDownloadLink:
     "https://github.com/{{owner}}/{{repo}}/releases/download/v{{version}}/{{xpiName}}.xpi",
 
@@ -39,8 +39,11 @@ export default defineConfig({
         },
         bundle: true,
         target: "firefox115",
-        outdir: `build/addon/content/scripts`,
+        outfile: `dist/addon/content/scripts/${pkg.config.addonRef}.js`,
       },
     ],
   },
+
+  // If you need to see a more detailed log, uncomment the following line:
+  // logLevel: "trace",
 });

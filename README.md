@@ -1,8 +1,9 @@
-# 恩特对照翻译 — Zotero 插件
+# Zotero Immersive Translate plugin
 
 [![zotero target version](https://img.shields.io/badge/Zotero-7-green?style=flat-square&logo=zotero&logoColor=CC2936)](https://www.zotero.org)
+[![Using Zotero Plugin Template](https://img.shields.io/badge/Using-Zotero%20Plugin%20Template-blue?style=flat-square&logo=github)](https://github.com/windingwind/zotero-plugin-template)
 
-恩特对照翻译 Zotero 插件，使用 BabelDOC 翻译 Zotero 的 PDF 文献。
+这是沉浸式翻译的 Zotero 插件，使用 [BabelDOC](https://github.com/funstory-ai/BabelDOC) 翻译 Zotero 的 PDF 文献。
 
 > [!NOTE]
 > 本插件基于 Zotero 7 开发，不兼容 Zotero 6，请升级至最新版本。
