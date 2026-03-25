@@ -374,10 +374,7 @@ function updateLoginUI(doc: Document) {
     loggedSection.removeAttribute("hidden");
     const email = getLoggedInEmail();
     if (statusLabel) {
-      statusLabel.setAttribute(
-        "data-l10n-args",
-        JSON.stringify({ email }),
-      );
+      statusLabel.setAttribute("data-l10n-args", JSON.stringify({ email }));
     }
   } else {
     loginSection.removeAttribute("hidden");
