@@ -28,7 +28,7 @@ export async function addTasksToQueue(ids?: number[]) {
   const authkey = getPref("authkey");
   if (!authkey) {
     showDialog({
-      title: getString("pref-login-required"),
+      title: getString("pref-test-failed-description"),
     });
     return;
   }

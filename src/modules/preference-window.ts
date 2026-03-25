@@ -14,7 +14,6 @@ import {
 } from "../config";
 import type { Language } from "./language/types";
 import { checkIsCN } from "../utils/cn";
-import { login, logout, isLoggedIn, getLoggedInEmail } from "../api/auth";
 
 export function registerPrefs() {
   Zotero.PreferencePanes.register({
@@ -315,77 +314,49 @@ function buildPrefsPane() {
   );
 }
 
-function updateLoginUI() {
-  const doc = addon.data.prefs?.window?.document;
-  if (!doc) return;
-
-  const loginSection = doc.getElementById(
-    `zotero-prefpane-${config.addonRef}-login-section`,
-  );
-  const loggedInSection = doc.getElementById(
-    `zotero-prefpane-${config.addonRef}-loggedin-section`,
-  );
-  const statusLabel = doc.getElementById(
-    `zotero-prefpane-${config.addonRef}-login-status`,
-  );
-
-  if (isLoggedIn()) {
-    loginSection?.setAttribute("hidden", "true");
-    loggedInSection?.removeAttribute("hidden");
-    if (statusLabel) {
-      statusLabel.setAttribute(
-        "value",
-        `${getString("pref-login-status")}: ${getLoggedInEmail()}`,
-      );
-    }
-  } else {
-    loginSection?.removeAttribute("hidden");
-    loggedInSection?.setAttribute("hidden", "true");
-  }
-}
-
 function bindPrefEvents() {
-  const doc = addon.data.prefs?.window?.document;
-  if (!doc) return;
+  addon.data
+    .prefs!.window.document?.querySelector(
+      `#zotero-prefpane-${config.addonRef}-authkey`,
+    )
+    ?.addEventListener("change", (e: Event) => {
+      ztoolkit.log(e);
+      setPref("authkey", (e.target as HTMLInputElement).value);
+    });
 
-  updateLoginUI();
-
-  doc
-    .getElementById(`zotero-prefpane-${config.addonRef}-login-button`)
-    ?.addEventListener("command", async () => {
-      const emailInput = doc.getElementById(
-        `zotero-prefpane-${config.addonRef}-login-email`,
-      ) as HTMLInputElement | null;
-      const passwordInput = doc.getElementById(
-        `zotero-prefpane-${config.addonRef}-login-password`,
-      ) as HTMLInputElement | null;
-
-      const email = emailInput?.value?.trim();
-      const password = passwordInput?.value;
-
-      if (!email || !password) {
-        showDialog({ title: getString("pref-login-failed") });
-        return;
-      }
-
+  addon.data
+    .prefs!.window.document?.querySelector(
+      `#zotero-prefpane-${config.addonRef}-test-button`,
+    )
+    ?.addEventListener("command", async (e: Event) => {
       try {
-        await login(email, password);
-        showDialog({ title: getString("pref-login-success") });
-        if (passwordInput) passwordInput.value = "";
-        updateLoginUI();
-      } catch (error: any) {
-        ztoolkit.log("Login failed:", error);
+        const result = await addon.api.checkAuthKey({
+          apiKey: getPref("authkey"),
+        });
+        if (result) {
+          showDialog({
+            title: getString("pref-test-success"),
+          });
+        } else {
+          showDialog({
+            title: getString("pref-test-failed"),
+            message: getString("pref-test-failed-description"),
+          });
+        }
+      } catch (error) {
+        ztoolkit.log(error);
         showDialog({
-          title: getString("pref-login-failed"),
-          message: error.message,
+          title: getString("pref-test-failed"),
+          message: getString("pref-test-failed-description"),
         });
       }
     });
 
-  doc
-    .getElementById(`zotero-prefpane-${config.addonRef}-logout-button`)
+  addon.data
+    .prefs!.window.document?.querySelector(
+      `#zotero-prefpane-${config.addonRef}-get-token-button`,
+    )
     ?.addEventListener("command", () => {
-      logout();
-      updateLoginUI();
+      Zotero.launchURL("https://enterscholar.com/profile");
     });
 }
